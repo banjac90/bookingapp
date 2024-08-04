@@ -36,11 +36,24 @@ npm install
 npm start
 ```
 ### 6. Access the Application
-Once both servers are running, you can access the application at:
+First stop servers and create superuser in Django. 
+
+Then in admin panel create few flats and bookings. Once you have some data in database run both servers. 
+```
+python manage.py runserver
+```
+and in bookingsfrontend folder
+```
+npm start
+```
+
+You can access the application at:
 - Django backend: http://127.0.0.1:8000
 - React frontend: http://localhost:3000
-  
-First create few flats and bookings.
-You can do that by creating superuser and access admin panel or do it on links http://127.0.0.1:8000/api/flats and http://127.0.0.1:8000/api/bookings
+
+Now try it!
+
+
+
 
 
