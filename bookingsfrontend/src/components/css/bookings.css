@@ -1,0 +1,80 @@
+
+.bookings-table{
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    text-align: left;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    font-family: sans-serif;
+}
+
+.bookings-table th, .bookings-table td{    
+    padding: 12px 15px;
+}
+
+.bookings-table thead th{
+    color: #000000;
+    background-color: #009879;
+    text-align: left;
+    font-weight: bold;
+}
+
+.bookings-table tbody tr {
+    border: 1px solid #dddddd;
+}
+
+.bookings-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+.bookings-table tbody tr:nth-of-type(odd) {
+    background-color: #d3b948de;
+}
+
+.bookings-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.bookings-table th button {    
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    
+}
+
+.bookings-table th button::after {
+    content: "\f0dc";
+    font-family: 'Font Awesome 5 Free';
+    display: inline-block;
+    font-weight: 900;
+    margin: 5px;
+    color: black;
+    
+}
+
+.bookings-table th button.ascending::after {
+    content: "\f0de";
+    color: black;
+    display: inline-block;
+}
+
+.bookings-table th button.descending::after {
+    content: "\f0dd";
+    color: black;
+    display: inline-block;
+}
+
+.Contanier{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.Contanier h2{
+    font-size: 2.5rem;
+    color: #009879;
+    font-family: sans-serif;
+}
