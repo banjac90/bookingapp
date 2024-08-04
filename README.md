@@ -26,7 +26,7 @@ pip install -r requirements.txt
 Also here are tests, we do it before run server, to be sure that everything runs smoothly
 ```
 python manage.py migrate
-python manage.py tests
+python manage.py test
 python manage.py runserver
 ```
 ### 5. Setup React Frontend
