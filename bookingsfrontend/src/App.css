@@ -9,6 +9,7 @@
     text-align: center;
     margin-top: 20px;
     position: relative;
+    min-height: 100vh;
 }
 .App::before {
   content: '';
@@ -20,6 +21,8 @@
   background-image: url(./resources/images/booking.jpg);
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
   opacity: 0.5; 
   z-index: -1; /* Place it behind other elements */
 }
+

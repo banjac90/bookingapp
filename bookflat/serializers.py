@@ -14,8 +14,6 @@ class BookingSerializer(serializers.ModelSerializer):
         model = Booking
         fields = ['id', 'flat_name', 'check_in', 'check_out', 'previous_booking_id']
 
+    # Set the previous booking id to None if it is not available
     def get_previous_booking_id(self, obj):
-        previous_booking = Booking.objects.filter(
-            flat=obj.flat, check_out__lt=obj.check_in
-        ).order_by('-check_out').first()
-        return previous_booking.id if previous_booking else None
+        return getattr(obj, 'previous_booking_id', None)
