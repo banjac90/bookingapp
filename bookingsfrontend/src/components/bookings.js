@@ -11,17 +11,24 @@ const Bookings = () => {
     const [bookings, setBookings] = useState([]);
     const [ordering, setOrdering] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const rowsPerPage = 10;
+    const [totalPages, setTotalPages] = useState(1);
+    const pageSize = 10;
     
     useEffect(() => {
-        axios.get('http://localhost:8000/api/bookings/', {
-            params: {ordering: ordering}
+        const url = currentPage === 1 ? 'http://localhost:8000/api/bookings/' : `http://localhost:8000/api/bookings/?page=${currentPage}`;
+        fetchBookings(url, ordering);
+    }, [currentPage, ordering]);
+
+    const fetchBookings = (url, ordering) => {
+        axios.get( url, { 
+            params: {ordering: ordering }
         }).then((response) => {
-            setBookings(response.data);
+            setBookings(response.data.results);
+            setTotalPages(Math.ceil(response.data.count / pageSize));
         }).catch((error) => {
             console.error(error);
         });
-    }, [ordering]);
+    }
 
     const handleSort = (field) => {
         setOrdering(ordering === field ? `-${field}` : field);
@@ -31,16 +38,12 @@ const Bookings = () => {
         setCurrentPage(page);
     }
 
-    const indexOfLastBooking = currentPage * rowsPerPage;
-    const indexOfFirstBooking = indexOfLastBooking - rowsPerPage; 
-    const currentBookings = bookings.slice(indexOfFirstBooking, indexOfLastBooking); /* current bookings to render */
-    const totalPages = Math.ceil(bookings.length / rowsPerPage);
 
     return (
         <div className='Contanier'>
             <h2>Bookings</h2> 
             <div className='bookings'>        
-                <BookingList bookings={currentBookings} ordering = {ordering} onSort = {handleSort} />     
+                <BookingList bookings={bookings} ordering = {ordering} onSort = {handleSort} />     
             </div>
             <Pagination currentPage = {currentPage} totalPages = {totalPages} onChangePage = {handlePageChange} />
         </div>

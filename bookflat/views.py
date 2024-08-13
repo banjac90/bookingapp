@@ -10,7 +10,7 @@ class FlatViewSet(viewsets.ModelViewSet):
 class BookingViewSet(viewsets.ModelViewSet):   
     serializer_class = BookingSerializer
     filter_backends = [filters.OrderingFilter]
-    ordering_fields = ['check_in']
+    ordering_fields = ['check_in']   
 
     def get_queryset(self):
         previous_booking_id = Booking.objects.filter(
