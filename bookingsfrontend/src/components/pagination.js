@@ -5,7 +5,7 @@ const Pagination = ({ currentPage, totalPages, onChangePage }) => {
     const maxPages = 10;
     const startPage = Math.floor((currentPage - 1) / maxPages) * maxPages + 1;
     const endPage = Math.min(startPage + maxPages - 1, totalPages);
-
+    
     const renderPageNumbers = () => {
         const pageNumbers = [];
         for (let i=startPage; i <= endPage; i++){

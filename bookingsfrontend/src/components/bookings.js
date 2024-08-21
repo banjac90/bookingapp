@@ -16,6 +16,8 @@ const Bookings = () => {
     
     useEffect(() => {
         const url = currentPage === 1 ? 'http://localhost:8000/api/bookings/' : `http://localhost:8000/api/bookings/?page=${currentPage}`;
+        setBookings([]);
+        setTotalPages(1);
         fetchBookings(url, ordering);
     }, [currentPage, ordering]);
 
@@ -24,7 +26,7 @@ const Bookings = () => {
             params: {ordering: ordering }
         }).then((response) => {
             setBookings(response.data.results);
-            setTotalPages(Math.ceil(response.data.count / pageSize));
+            setTotalPages(Math.ceil(response.data.count / pageSize));            
         }).catch((error) => {
             console.error(error);
         });

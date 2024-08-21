@@ -17,7 +17,7 @@ class BookingViewSet(viewsets.ModelViewSet):
             flat_id = OuterRef('flat_id'),
             check_out__lt = OuterRef('check_in')        
         ).order_by('-check_out').values('id')[:1]
-        
+
         main_query = Booking.objects.annotate(
             previous_booking_id = Subquery(previous_booking_id)            
         ).select_related('flat').order_by('flat', 'check_in')
@@ -27,3 +27,5 @@ class BookingViewSet(viewsets.ModelViewSet):
             main_query = main_query.order_by(ordering)
 
         return main_query
+
+

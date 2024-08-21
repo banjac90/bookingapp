@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from "react";
+import React from "react";
 import BokingItem from "./bookingitem";
 import "./css/bookings.css";
 /*
@@ -15,7 +15,7 @@ const BookingList = ({ bookings, ordering, onSort }) => {
         }
         return ordering === name ? "ascending" : ordering === `-${name}` ? "descending" : "";
     };
-
+    
     return (
         <table className="bookings-table">
             <thead>

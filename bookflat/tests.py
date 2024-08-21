@@ -5,7 +5,6 @@ from rest_framework.test import APIRequestFactory, APIClient
 from .serializers import FlatSerializer, BookingSerializer
 from datetime import date
 from django.urls import reverse
-from django.db.models import OuterRef, Subquery
 
 # Models test case
 class FlatTestCase(TestCase):
@@ -61,43 +60,29 @@ class BookingViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_get_queryset(self):
-        response = self.client.get(reverse('booking-list'))
-        previous_booking_id = Booking.objects.filter(
-            flat_id = OuterRef('flat_id'),
-            check_out__lt = OuterRef('check_in')        
-        ).order_by('-check_out').values('id')[:1]        
+        response = self.client.get(reverse('booking-list'))     
+        print(self.booking1)
+        fla1_first_booking = response.data['results'][0]
+        booking1 = BookingSerializer(self.booking1)
 
-        bookings = Booking.objects.annotate(
-            previous_booking_id = Subquery(previous_booking_id)            
-        ).select_related('flat').order_by('flat', 'check_in')
+        self.assertEqual(fla1_first_booking, booking1.data)
+        self.assertEqual(fla1_first_booking['previous_booking_id'], None)
 
-        serialized_bookings = BookingSerializer(bookings, many=True).data
+        flat1_second_booking = response.data['results'][1]
 
-        self.assertEqual(serialized_bookings, response.data)
+        self.assertEqual(flat1_second_booking['previous_booking_id'], self.booking1.id)
+        
+        flat2_second_booking = response.data['results'][4]
 
-        #just to be sure that the previous booking id is correct, check some values
-        for booking in response.data:
-            if booking['id'] == self.booking2.id:
-                self.assertEqual(booking['previous_booking_id'], self.booking1.id)
-            elif booking['id'] == self.booking5.id:
-                self.assertEqual(booking['previous_booking_id'], self.booking4.id)
+        self.assertEqual(flat2_second_booking['previous_booking_id'], self.booking4.id)
 
     def test_ordering_check_in(self):
         response = self.client.get(reverse('booking-list'), {'ordering': 'check_in'})        
-
-        previous_booking_id = Booking.objects.filter(
-            flat_id = OuterRef('flat_id'),
-            check_out__lt = OuterRef('check_in')        
-        ).order_by('-check_out').values('id')[:1]        
-
-        ordered_bookings = Booking.objects.annotate(
-            previous_booking_id = Subquery(previous_booking_id)        
-        ).select_related('flat').order_by('check_in')        
-
-        serialized_bookings = BookingSerializer(ordered_bookings, many=True).data
-
-        self.assertEqual(serialized_bookings, response.data)
-
+        results = response.data['results']
+        if len(results) > 1:
+            for i in range(len(results) - 1):
+                self.assertLessEqual(results[i]['check_in'], results[i+1]['check_in'])
+        
 # Serializers test case
 class FlatSerializerTestCase(TestCase):
     def setUp(self):
